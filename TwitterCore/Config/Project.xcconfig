@@ -42,7 +42,6 @@ MODULEMAP_FILE = TwitterCore-$(FAB_PRODUCT_BUNDLE_IDENTIFIER_SUFFIX)-module.modu
 MODULEMAP_PRIVATE_FILE = TwitterCore-module.private.modulemap
 
 OTHER_LDFLAGS = $(inherited) -ObjC
-OTHER_LDFLAGS[sdk=macosx*] = $(inherited) -framework Cocoa
 OTHER_LDFLAGS[sdk=iphoneos*] = $(inherited) -framework UIKit -framework Social -framework Accounts
 OTHER_LDFLAGS[sdk=iphonesimulator*] = $(inherited) -framework UIKit -framework Social -framework Accounts
 OTHER_LDFLAGS[sdk=watchos*] = $(inherited) -framework WatchKit

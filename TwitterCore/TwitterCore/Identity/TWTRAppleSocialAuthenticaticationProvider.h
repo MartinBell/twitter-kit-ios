@@ -24,6 +24,10 @@
 @class TWTRAuthConfig;
 @protocol TWTRAPIServiceConfig;
 
+//Added by Martin, these strings are deprecated in the API
+static NSString* ACAccountTypeIdentifierTwitterLocal=@"com.apple.twitter";
+static NSString* SLServiceTypeTwitterLocal=@"com.apple.social.twitter";
+
 __TVOS_UNAVAILABLE @interface TWTRAppleSocialAuthenticaticationProvider : TWTRAuthenticationProvider
 
                                                                           -

@@ -96,7 +96,10 @@ NSString *const TWTRSocialAppProviderActionSheetCompletionKey = @"TWTRAppleSocia
  */
 - (void)requestAccessForTwitterAccountsWithCompletion:(ACAccountStoreRequestAccessCompletionHandler)completion
 {
-    ACAccountType *twitterAccount = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    
+    ACAccountTypeIdentifierTwitter;
+    
+    ACAccountType *twitterAccount = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitterLocal];
     [self.accountStore requestAccessToAccountsWithType:twitterAccount options:nil completion:^(BOOL granted, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (completion) {
@@ -108,7 +111,7 @@ NSString *const TWTRSocialAppProviderActionSheetCompletionKey = @"TWTRAppleSocia
 
 - (NSArray *)getTwitterAccounts
 {
-    ACAccountType *twitterAccount = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    ACAccountType *twitterAccount = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitterLocal];
     return [self.accountStore accountsWithAccountType:twitterAccount];
 }
 
@@ -117,7 +120,7 @@ NSString *const TWTRSocialAppProviderActionSheetCompletionKey = @"TWTRAppleSocia
     if (!account) {
         NSLog(@"Attempting to authorize invalid account via SLRequest");
     }
-    SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:url parameters:params];
+    SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitterLocal requestMethod:SLRequestMethodPOST URL:url parameters:params];
     request.account = account;
     [request performRequestWithHandler:completion];
 }
@@ -205,7 +208,7 @@ NSString *const TWTRSocialAppProviderActionSheetCompletionKey = @"TWTRAppleSocia
 - (void)showActionSheetWithCompletion:(TWTRAuthenticationProviderCompletion)completion
 {
     TWTRParameterAssertOrReturn(completion);
-
+#if !TARGET_OS_UIKITFORMAC
     dispatch_async(dispatch_get_main_queue(), ^{
         UIActionSheet *sheet = [self actionSheet];
         objc_setAssociatedObject(sheet, (__bridge const void *)(TWTRSocialAppProviderActionSheetCompletionKey), completion, OBJC_ASSOCIATION_COPY_NONATOMIC);
@@ -215,8 +218,10 @@ NSString *const TWTRSocialAppProviderActionSheetCompletionKey = @"TWTRAppleSocia
         // don't officially support iPad at this time so this will do.
         [sheet showInView:[TWTRUtils topViewController].view];
     });
+#endif
+    
 }
-
+#if !TARGET_OS_UIKITFORMAC
 - (UIActionSheet *)actionSheet
 {
     UIActionSheet *sheet = [UIActionSheet new];
@@ -231,7 +236,11 @@ NSString *const TWTRSocialAppProviderActionSheetCompletionKey = @"TWTRAppleSocia
     return sheet;
 }
 
+#endif
+
 #pragma mark - UIActionSheet delegate
+
+#if !TARGET_OS_UIKITFORMAC
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -248,6 +257,7 @@ NSString *const TWTRSocialAppProviderActionSheetCompletionKey = @"TWTRAppleSocia
     TWTRAuthenticationProviderCompletion completion = objc_getAssociatedObject(actionSheet, (__bridge const void *)(TWTRSocialAppProviderActionSheetCompletionKey));
     completion(nil, [NSError errorWithDomain:TWTRLogInErrorDomain code:TWTRLogInErrorCodeCancelled userInfo:@{ NSLocalizedDescriptionKey: @"User cancelled authentication." }]);
 }
-
+#endif
 @end
+
 #endif

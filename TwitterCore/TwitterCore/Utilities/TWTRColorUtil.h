@@ -20,16 +20,9 @@
  */
 
 #import <Foundation/Foundation.h>
-#if IS_UIKIT_AVAILABLE
 #import <UIKit/UIKit.h>
-#else
-#import <Cocoa/Cocoa.h>
 
-// This adds type name compatibility, but definitely not API cmopatibility for these classes. This
-// is really a temporarly workaround to get this code building for OS X.
-typedef NSColor UIColor;
-typedef NSImage UIImage;
-#endif
+
 
 NS_ASSUME_NONNULL_BEGIN
 

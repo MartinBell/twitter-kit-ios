@@ -14,11 +14,9 @@
 #endif
 #import "TWTRDefines.h"
 
-#if IS_UIKIT_AVAILABLE
+
 #import <UIKit/UIKit.h>
-#else
-#import <Cocoa/Cocoa.h>
-#endif
+
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < 80000
 #error "TwitterCore doesn't support iOS 7.x and lower. Please, change your minimum deployment target to iOS 8.0"

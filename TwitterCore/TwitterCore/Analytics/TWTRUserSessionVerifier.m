@@ -15,11 +15,9 @@
  *
  */
 
-#if IS_UIKIT_AVAILABLE
+
 #import <UIKit/UIKit.h>
-#else
-#import <Cocoa/Cocoa.h>
-#endif
+
 #import "TWTRDateUtil.h"
 #import "TWTRUserSessionVerifier.h"
 
